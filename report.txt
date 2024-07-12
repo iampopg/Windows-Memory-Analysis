@@ -1,0 +1,73 @@
+                        Windows Memory Analysis Report
+                        
+Date: 10/07/2024
+
+Conducted by: Pop G
+
+1. Introduction
+This analysis was conducted on my old Windows 10 system, which I suspected was hacked. The objective was to identify any suspicious activities or potential indicators of compromise (IOCs) using Volatility and other forensic tools.
+
+
+2. Process Analysis
+Suspicious IP Connections with Chrome.exe
+During the analysis, the following suspicious IP connections were identified associated with Chrome.exe:
+
+74.125.206.188:5228 (Static IP, Datacenter)
+142.251.168.188:5228 (Static IP, Datacenter)
+192.229.221.95:80 (Static IP, Datacenter)
+VirusTotal Analysis for Chrome.exe
+https://www.virustotal.com/gui/file/311e6f805f5f0ca710e41276b905afe4e66d04df95c4bf9e04d590885f157441/details
+https://www.virustotal.com/gui/file/f878b9cdef26f4c46e1babda40acc15ffb0a7eaca9312e49ed0ee8566574954a/behavior
+
+Possibly Malware Found
+File: MFResident.exe
+Hash: 00D4A7FF3FFE03712CF3C62D695D1E19975881313A0E702CB4BB39A112B42E2F
+Path: C:\Program Files (x86)\Common Files\iMyFone\Components\Resident\MFResident.exe
+Installed by: iMyFone application
+URL and Details Associated with MFResident.exe
+https://accountapi.imyfone.com
+UserDetail.json
+/v2/reside-message
+/v2/reside-uninstall-message
+VirusTotal Analysis for MFResident.exe
+https://www.virustotal.com/gui/file/56f03bda112a6eebc4513280728fac74eaf3fd10ef25ebdd1a5ee47e4715e57d/behavior
+
+Parent Process
+Parent Process ID: LocalService.exe 
+Parent Process Hash: FDB9FEC2A2809B72C4897955EAA4B960BBC46C183EE15ED706F66DB4E3D46484
+Suspicious IP 192.229.221.95 Analysis
+VirusTotal Community Comment (7/7/2024):
+
+Comment on VT community
+IP Address: 192.229.221.95
+Country: US
+Netblock Owner: Edgecast Inc., 13031 W Jefferson Blvd, Building 900, Los Angeles, CA, US, 90094
+This IP address is associated with the TrickBot family of malware, which is a type of Banking Trojan. Two malware samples associated with this IP address were identified, and detailed reports are available:
+
+SHA1: e5676c39db755278e550394c77391b3a3f5f86eb
+View Report
+
+SHA1: ad8a64419c174ee1fedce158a9b085fd
+View Report
+
+
+3. For Further Investigation
+MFResident.exe
+Path: C:\Program Files (x86)\Common Files\iMyFone\Components\Resident\MFResident.exe
+Urgent Findings with Volatility
+SearchTextHarvester
+Command: vol -f DESKTOP-C5IQLQB-20240710-110534.dmp windows.handles | grep "SearchTextHarvester"
+
+Output:
+yaml
+Copy code
+Progress:  100.00               PDB scanning finished                                
+4056    SearchIndexer.  0xb08413843b90  0xba8   File    0x1a0116        \Device\NamedPipe\SearchTextHarvester
+
+
+Additional Findings
+Various handles and file paths identified during the analysis (e.g., \Windows\System32\fdprint.dll, \USER\C01BC476-A852-4dfd-B33F-E308F3497BF4\3, etc.)
+
+
+4. Conclusion
+This memory analysis has revealed several suspicious activities and potential indicators of compromise on the system. The identified suspicious IP connections, potentially malicious files, and other findings warrant further investigation to confirm any malicious intent and to take appropriate remediation actions.
